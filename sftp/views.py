@@ -23,17 +23,7 @@ transport.Transport._preferred_kex = (
         'diffie-hellman-group1-sha1',
 )
 
-# SFTP info:
-# URL: stagingsecureftp.hostanalytics.com
-# User: Peets_sftp
-# PW: 1HZUS9YGVVOZ9ojkFmNJ
-# Port: 22
-
-# File: TEST.CSV 
-
 def index(request):
-
-
 
     host = "stagingsecureftp.hostanalytics.com"
     user = "Peets_sftp"
@@ -49,20 +39,13 @@ def index(request):
         
         with s.open("/"+filename, "r+", bufsize=32768) as f:
             df = pd.read_csv(f)
-            
-
-        print("Connection succesfully stablished ... ")
-        print(df)
-
+ 
         s.close()  
     except:
         raise Http404("Question does not exist")
 
     context = {
-        'data': df.values.tolist(),
+        'data': [{'entity':data[0] , 'account':data[1], "year":data[2], "month":data[3],'amt':data[4],'db_amount':data[4] * 2} for data in df.values.tolist()],
     }
-
-    print(context)
-
+ 
     return render(request, 'sftp/index.html', context)
-
