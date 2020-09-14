@@ -1,13 +1,7 @@
 from django.shortcuts import render
-from django.template import loader
-from django.shortcuts import render
 from django.http import Http404
-
-
-# Create your views here.
 import pandas as pd
 
-from django.http import HttpResponse
 import pysftp as sftp
 from paramiko import transport
 
@@ -31,7 +25,6 @@ def index(request):
     port = 22
     filename = "TEST.CSV"
     df = False
-    
     try:
         cnopts = sftp.CnOpts()
         cnopts.hostkeys = None
@@ -40,10 +33,9 @@ def index(request):
         with s.open("/"+filename, "r+", bufsize=32768) as f:
             df = pd.read_csv(f)
  
-        s.close()  
+        s.close()
     except:
         raise Http404("Question does not exist")
-
     context = {
         'data': [{'entity':data[0] , 'account':data[1], "year":data[2], "month":data[3],'amt':data[4],'db_amount':data[4] * 2} for data in df.values.tolist()],
     }
