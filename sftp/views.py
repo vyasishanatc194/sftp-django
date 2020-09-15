@@ -4,6 +4,7 @@ import pandas as pd
 
 import pysftp as sftp
 from paramiko import transport
+from django.conf import settings
 
 transport.Transport._preferred_kex = (
         'ecdh-sha2-nistp256',
@@ -19,11 +20,12 @@ transport.Transport._preferred_kex = (
 
 def index(request):
 
-    host = "stagingsecureftp.hostanalytics.com"
-    user = "Peets_sftp"
-    password = "1HZUS9YGVVOZ9ojkFmNJ"
-    port = 22
-    filename = "TEST.CSV"
+    host = settings.FTP_HOST
+    user = settings.FTP_USER
+    password = settings.FTP_PASSWORD
+    port = settings.FTP_PORT
+    filename = settings.FTP_FILENAME
+
     df = False
     try:
         cnopts = sftp.CnOpts()
@@ -35,7 +37,7 @@ def index(request):
  
         s.close()
     except:
-        raise Http404("Question does not exist")
+        raise Http404("FTP NOT WORKING")
     context = {
         'data': [{'entity':data[0] , 'account':data[1], "year":data[2], "month":data[3],'amt':data[4],'db_amount':data[4] * 2} for data in df.values.tolist()],
     }
