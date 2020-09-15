@@ -17,7 +17,7 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
-print(READ_DOT_ENV_FILE)
+
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
@@ -126,10 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-print('FTP_HOST')
-print()
-
+ 
 FTP_HOST = env("FTP_HOST", default="")
 FTP_USER = env("FTP_USER", default="")
 FTP_PASSWORD = env("FTP_PASSWORD", default="")
